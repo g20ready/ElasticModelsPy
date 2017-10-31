@@ -6,9 +6,9 @@ class AnalysisSerializable(Serializable):
         self.name = name
 
     def __serialize__(self):
-        return dict(
-            name=self.__analysis_data__()
-        )
+        return {
+            self.name: self.__analysis_data__()
+        }
 
     def __analysis_data__(self):
         raise NotImplemented()

@@ -15,9 +15,9 @@ def test_filter():
 
     serialized = token_filter.__serialize__()
     assert isinstance(serialized, dict)
-    assert 'name' in serialized.keys()
+    assert 'simple_lowercase' in serialized.keys()
 
-    serialized_data = serialized.get('name')
+    serialized_data = serialized.get('simple_lowercase')
     assert serialized_data.get('type') == 'lowercase'
 
 def test_ascii_folding_token_filter():
@@ -27,9 +27,9 @@ def test_ascii_folding_token_filter():
 
     serialized = ascii_fold_filter.__serialize__()
     assert isinstance(serialized, dict)
-    assert 'name' in serialized.keys()
+    assert 'my_ascii_fold' in serialized.keys()
 
-    serialized_data = serialized.get('name')
+    serialized_data = serialized.get('my_ascii_fold')
     assert serialized_data.get('type') == 'asciifolding'
     assert serialized_data.get('preserve_original')
 
@@ -41,9 +41,9 @@ def test_stopwords_token_filter():
 
     serialized = stopwords_filter.__serialize__()
     assert isinstance(serialized, dict)
-    assert 'name' in serialized.keys()
+    assert 'simple_stopwords' in serialized.keys()
 
-    serialized_data = serialized.get('name')
+    serialized_data = serialized.get('simple_stopwords')
     assert serialized_data.get('type') == 'stopwords'
     assert serialized_data.get('stopwords') == '_greek_'
 
@@ -55,9 +55,9 @@ def test_language_token_filter():
 
     serialized = language_filter.__serialize__()
     assert isinstance(serialized, dict)
-    assert 'name' in serialized.keys()
+    assert 'greek_lowercase' in serialized.keys()
 
-    serialized_data = serialized.get('name')
+    serialized_data = serialized.get('greek_lowercase')
     assert serialized_data.get('type') == 'lowercase'
     assert serialized_data.get('language') == 'greek'
 
@@ -70,9 +70,9 @@ def test_length_token_filter():
 
     serialized = length_token_filter.__serialize__()
     assert isinstance(serialized, dict)
-    assert 'name' in serialized.keys()
+    assert 'length_token_filter' in serialized.keys()
 
-    serialized_data = serialized.get('name')
+    serialized_data = serialized.get('length_token_filter')
     assert serialized_data.get('type') == 'length'
     assert serialized_data.get('min') == 5
     assert serialized_data.get('max') == 20
@@ -85,9 +85,9 @@ def test_lowercase_token_filter():
 
     serialized = lowercase_token_filter.__serialize__()
     assert isinstance(serialized, dict)
-    assert 'name' in serialized.keys()
+    assert 'greek_lowercase' in serialized.keys()
 
-    serialized_data = serialized.get('name')
+    serialized_data = serialized.get('greek_lowercase')
     assert serialized_data.get('type') == 'lowercase'
     assert serialized_data.get('language') == 'greek'
 
