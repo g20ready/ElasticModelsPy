@@ -69,3 +69,5 @@ class StopwordsTokenFilter(TokenFilter):
         return dict(
             stopwords=self.stopwords
         )
+
+

@@ -30,7 +30,9 @@ provide abstractions for working with ElasticSearch.
 Features
 --------
 
-* TODO
+* @giannhskod Pass the token filters from https://www.elastic.co/guide/en/elasticsearch/reference/5.5/analysis-lowercase-tokenfilter.html
+* @max Finish Analyzer structure
+
 
 Credits
 ---------
