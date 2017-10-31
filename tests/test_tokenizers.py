@@ -1,18 +1,46 @@
-from elasticpymodels.analysis.tokenizers import Tokenizer, StandardTokenizer
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""Tests for `elasticpymodels.analysis`"""
+
+from elasticpymodels.analysis.tokenizers import Tokenizer, StandardTokenizer, NGramTokenizer, EdgeNGramTokenizer
 
 def test_tokenizer():
-    tokenizer = Tokenizer('standard_tokenizer', 'standard')
-    assert tokenizer.name == 'standard_tokenizer'
-    assert  tokenizer.type == 'standard'
-
-    serialized = tokenizer.__serialize__()
-    assert 'standard_tokenizer' in serialized.keys()
-
-    serialized_data = serialized.get('standard_tokenizer')
-    assert len(serialized_data.keys()) == 1
-    assert serialized_data.get('type') == 'standard'
-
+    tokenizer = Tokenizer('tokenizer', 'standard')
+    assert tokenizer.__serialize__() == {
+        'tokenizer': {
+            'type': 'standard'
+        }
+    }
 
 def test_standard_tokenizer():
-    standard_tokenizer = StandardTokenizer('s', )
+    standard_tokenizer = StandardTokenizer('standard_tokenizer', max_token_length=200)
+    assert standard_tokenizer.__serialize__() == {
+        'standard_tokenizer': {
+            'type': 'standard',
+            'max_token_length': 200
+        }
+    }
+
+def test_ngram_tokenizer():
+    ngram_tokenizer = NGramTokenizer('ngram', 2, 10)
+    assert ngram_tokenizer.__serialize__() == {
+        'ngram': {
+            'type': 'ngram',
+            'min_gram': 2,
+            'max_gram': 10,
+            'token_chars': []
+        }
+    }
+
+def test_edge_ngram_tokenizer():
+    edge_ngram_tokenizer = EdgeNGramTokenizer('edge_ngram', 2, 12)
+    assert edge_ngram_tokenizer.__serialize__() == {
+        'edge_ngram': {
+            'type': 'edge_ngram',
+            'min_gram': 2,
+            'max_gram': 12,
+            'token_chars': []
+        }
+    }
 
