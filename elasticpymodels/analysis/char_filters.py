@@ -1,17 +1,33 @@
 from elasticpymodels.analysis.base import AnalysisSerializable
 
 class CharFilter(AnalysisSerializable):
-
-    def __init__(self, name):
+    def __init__(self, name, type):
         super(CharFilter, self).__init__(name)
+        self.type = type
 
+    def __analysis_data__(self):
+        data = dict(
+            type=self.type
+        )
+        data.update(self.__char_filter_data__())
+        return data
+
+    def __char_filter_data__(self):
+        return dict()
 
 class HtmlCharFilter(CharFilter):
     """
     The html_strip character filter strips HTML elements from the text and replaces HTML entities with their decoded
     value (e.g. replacing &amp; with &).
     """
-    pass
+    def __init__(self, name, escaped_tags=list()):
+        super(HtmlCharFilter, self).__init__(name, 'html_strip')
+        self.escaped_tags = escaped_tags
+
+    def __char_filter_data__(self):
+        return dict(
+            escaped_tags=self.escaped_tags
+        )
 
 
 class MappingCharFilter(CharFilter):
@@ -22,7 +38,28 @@ class MappingCharFilter(CharFilter):
     Matching is greedy; the longest pattern matching at a given point wins. Replacements are allowed to be the empty
     string.
     """
-    pass
+    def __init__(self, name, mappings=list(), mappings_path=None):
+        """
+        Either mapping
+        :param name:
+        :param mappings:        A array of mappings, with each element having the form key => value.
+        :param mappings_path:   A path, either absolute or relative to the config directory, to a UTF-8 encoded text
+                                mappings file containing a key => value mapping per line. If both specified mappings
+                                path has priority.
+        """
+        super(MappingCharFilter, self).__init__(name, 'mapping')
+        self.mappings = mappings
+        self.mappings_path = mappings_path
+
+    def __char_filter_data__(self):
+        if self.mappings_path:
+            return dict(
+                mappings_path=self.mappings_path
+            )
+        return dict(
+            mappings=self.mappings
+        )
+
 
 
 class PatternReplaceCharFilter(CharFilter):
@@ -30,4 +67,19 @@ class PatternReplaceCharFilter(CharFilter):
     The pattern_replace character filter uses a regular expression to match characters which should be replaced with
     the specified replacement string. The replacement string can refer to capture groups in the regular expression.
     """
-    pass
+    def __init__(self, name, pattern, replacement, flags=None):
+        super(PatternReplaceCharFilter, self).__init__(name, 'pattern_replace')
+        self.pattern = pattern
+        self.replacement = replacement
+        self.flag = flags
+
+    def __char_filter_data__(self):
+        data = dict(
+            pattern = self.pattern,
+            replacement = self.replacement
+        )
+        if self.flag:
+            data['flag'] = self.flag
+        return data
+
+
