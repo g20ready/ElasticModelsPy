@@ -6,7 +6,8 @@
 import pytest
 
 from elasticpymodels.analysis.token_filters import TokenFilter, AsciiFoldTokenFilter\
-    , StopwordsTokenFilter, LanguageTokenFilter, LengthTokenFilter, LowercaseTokenFilter
+    , StopwordsTokenFilter, LanguageTokenFilter, LengthTokenFilter, LowercaseTokenFilter\
+    , UppercaseTokenFilter, NgramTokenFilter, StopTokenFilter
 
 def test_filter():
     token_filter = TokenFilter('simple_lowercase', 'lowercase')
@@ -62,4 +63,36 @@ def test_lowercase_token_filter():
         }
     }
 
+def test_uppercase_token_filter():
+    uppercase_token_filter = UppercaseTokenFilter('greek_uppercase', 'greek')
+    assert uppercase_token_filter.__serialize__() == {
+        'greek_uppercase': {
+            'type': 'uppercase',
+            'language': 'greek'
+        }
+    }
 
+
+def test_ngram_token_filter():
+    ngram_token_filter = NgramTokenFilter('ngram_token_filter', 1, 20)
+    assert ngram_token_filter.__serialize__() == {
+        'ngram_token_filter' : {
+            'type': 'nGram',
+            'min_gram': 1,
+            'max_gram': 20
+        }
+    }
+
+
+def test_stop_token_filter():
+    test_stop_filter = StopTokenFilter('stop_token_filter', ['is', 'the', 'and'],
+                                       '/home/tester/stepwords_path.txt', False , True)
+    assert test_stop_filter.__serialize__() == {
+        'stop_token_filter': {
+            'type': 'stop',
+            'stopwords':  ['is', 'the', 'and'],
+            'stopwords_path': '/home/tester/stepwords_path.txt',
+            'ignore_case': False,
+            'remove_trailing': True
+        }
+    }

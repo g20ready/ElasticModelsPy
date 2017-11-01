@@ -60,6 +60,11 @@ class LowercaseTokenFilter(LanguageTokenFilter):
         super(LowercaseTokenFilter, self).__init__(name, 'lowercase', language)
 
 
+class UppercaseTokenFilter(LanguageTokenFilter):
+    def __init__(self, name, language):
+        super(UppercaseTokenFilter, self).__init__(name, 'uppercase', language)
+
+
 class StopwordsTokenFilter(TokenFilter):
     def __init__(self, name, stopwords):
         super(StopwordsTokenFilter, self).__init__(name, 'stopwords')
@@ -71,3 +76,32 @@ class StopwordsTokenFilter(TokenFilter):
         )
 
 
+class NgramTokenFilter(TokenFilter):
+    def __init__(self, name, min_gram, max_gram):
+        super(NgramTokenFilter, self).__init__(name, 'nGram')
+        self.min_gram = min_gram
+        self.max_gram = max_gram
+
+    def __filter_data__(self):
+        return dict(
+            min_gram=self.min_gram,
+            max_gram=self.max_gram
+        )
+
+
+class StopTokenFilter(TokenFilter):
+    def __init__(self, name, stopwords, stopwords_path,
+                 ignore_case, remove_trailing):
+        super(StopTokenFilter, self).__init__(name, 'stop')
+        self.stopwords = stopwords
+        self.stopwords_path = stopwords_path
+        self.ignore_case = ignore_case
+        self.remove_trailing = remove_trailing
+
+    def __filter_data__(self):
+        return dict(
+            stopwords = self.stopwords,
+            stopwords_path = self.stopwords_path,
+            ignore_case = self.ignore_case,
+            remove_trailing = self.remove_trailing
+        )
