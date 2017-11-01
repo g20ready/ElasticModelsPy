@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'ElasticPyModels'
+project = u'elasticmodelspy'
 copyright = u"2017, Marsel Tzatzo"
 
 # The version info for the project you're documenting, acts as replacement
@@ -188,7 +188,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'elasticpymodelsdoc'
+htmlhelp_basename = 'elasticmodelspydoc'
 
 
 # -- Options for LaTeX output ------------------------------------------
@@ -209,7 +209,7 @@ latex_elements = {
 # [howto/manual]).
 latex_documents = [
     ('index', 'elasticmodelspy.tex',
-     u'ElasticPyModels Documentation',
+     u'elasticmodelspy Documentation',
      u'Marsel Tzatzo', 'manual'),
 ]
 
@@ -240,7 +240,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'elasticmodelspy',
-     u'ElasticPyModels Documentation',
+     u'elasticmodelspy Documentation',
      [u'Marsel Tzatzo'], 1)
 ]
 
@@ -255,7 +255,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'elasticmodelspy',
-     u'ElasticPyModels Documentation',
+     u'elasticmodelspy Documentation',
      u'Marsel Tzatzo',
      'elasticmodelspy',
      'One line description of project.',

@@ -1,4 +1,4 @@
-* ElasticPyModels version:
+* elasticmodelspy version:
 * Python version:
 * Operating System:
 

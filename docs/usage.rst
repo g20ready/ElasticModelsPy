@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use ElasticPyModels in a project::
+To use elasticmodelspy in a project::
 
-    import elasticpymodels
+    import elasticmodelspy

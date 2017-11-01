@@ -1,20 +1,20 @@
 ===============
-ElasticPyModels
+elasticmodelspy
 ===============
 
 
-.. image:: https://img.shields.io/pypi/v/elasticpymodels.svg
-        :target: https://pypi.python.org/pypi/elasticpymodels
+.. image:: https://img.shields.io/pypi/v/elasticmodelspy.svg
+        :target: https://pypi.python.org/pypi/elasticmodelspy
 
-.. image:: https://img.shields.io/travis/g20ready/elasticpymodels.svg
-        :target: https://travis-ci.org/g20ready/elasticpymodels
+.. image:: https://img.shields.io/travis/g20ready/elasticmodelspy.svg
+        :target: https://travis-ci.org/g20ready/elasticmodelspy
 
-.. image:: https://readthedocs.org/projects/elasticpymodels/badge/?version=latest
-        :target: https://elasticpymodels.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/elasticmodelspy/badge/?version=latest
+        :target: https://elasticmodelspy.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/g20ready/elasticpymodels/shield.svg
-     :target: https://pyup.io/repos/github/g20ready/elasticpymodels/
+.. image:: https://pyup.io/repos/github/g20ready/elasticmodelspy/shield.svg
+     :target: https://pyup.io/repos/github/g20ready/elasticmodelspy/
      :alt: Updates
 
 Python wrapper around elasticsearch py.
@@ -24,7 +24,7 @@ provide abstractions for working with ElasticSearch.
 
 
 * Free software: MIT license
-* Documentation: https://elasticpymodels.readthedocs.io.
+* Documentation: https://elasticmodelspy.readthedocs.io.
 
 
 Features

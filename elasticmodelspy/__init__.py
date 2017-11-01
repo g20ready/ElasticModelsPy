@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Top-level package for ElasticPyModels."""
+"""Top-level package for elasticmodelspy."""
 
 __author__ = """Marsel Tzatzo"""
 __email__ = 'tmarselg@gmail.com'

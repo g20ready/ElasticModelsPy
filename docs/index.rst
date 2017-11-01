@@ -1,4 +1,4 @@
-Welcome to ElasticPyModels's documentation!
+Welcome to elasticmodelspy's documentation!
 ======================================
 
 Contents:
