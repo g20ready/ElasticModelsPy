@@ -1,10 +1,14 @@
-from .base import Serializable
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-from .analysis import BaseAnalyzer
+from elasticmodelspy.analysis.base import Serializable
 
 class ElasticBaseType(Serializable):
-    def __init__(self):
-        pass
+    def __init__(self, name):
+        super(ElasticBaseType, self).__init__(name)
+
+    def __analysis_data__(self):
+        return dict()
 
 
 class Text(ElasticBaseType):
@@ -25,7 +29,7 @@ class Text(ElasticBaseType):
 
     def __validate_analyzer(self, analyzer):
         if not (isinstance(self.analyzer, BaseAnalyzer) or isinstance(self.analyzer, str)):
-            raise TypeError('Analyzer ({0}) can only be of type elasticpymodels.analyzers.BaseAnalyzer or str.'.format(analyzer))
+            raise TypeError('Analyzer ({0}) can only be of type elasticmodelspy.analyzers.BaseAnalyzer or str.'.format(analyzer))
         return analyzer
 
 

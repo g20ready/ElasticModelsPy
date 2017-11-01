@@ -1,4 +1,4 @@
-from elasticpymodels.analysis.char_filters import CharFilter, HtmlCharFilter, MappingCharFilter, PatternReplaceCharFilter
+from elasticmodelspy.analysis.char_filters import CharFilter, HtmlCharFilter, MappingCharFilter, PatternReplaceCharFilter
 
 def test_char_filter():
     char_filter = CharFilter('char_filter', 'some_type')

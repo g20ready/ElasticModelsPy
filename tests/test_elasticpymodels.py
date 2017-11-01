@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `elasticpymodels` package."""
+"""Tests for `elasticmodelspy` package."""
 
 import pytest
 
 
-from elasticpymodels import elasticpymodels
+from elasticmodelspy import elasticmodelspy
 
 
 @pytest.fixture

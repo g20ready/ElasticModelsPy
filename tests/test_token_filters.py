@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `elasticpymodels.analysis`"""
+"""Tests for `elasticmodelspy.analysis`"""
 
 import pytest
 
-from elasticpymodels.analysis.token_filters import TokenFilter, AsciiFoldTokenFilter\
+from elasticmodelspy.analysis.token_filters import TokenFilter, AsciiFoldTokenFilter\
     , StopwordsTokenFilter, LanguageTokenFilter, LengthTokenFilter, LowercaseTokenFilter
 
 def test_filter():

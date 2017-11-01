@@ -26,19 +26,19 @@ test_requirements = [
 ]
 
 setup(
-    name='elasticpymodels',
+    name='elasticmodelspy',
     version='0.1.0',
     description="Python wrapper aroung elasticsearch py.",
     long_description=readme + '\n\n' + history,
     author="Marsel Tzatzo",
     author_email='tmarselg@gmail.com',
-    url='https://github.com/g20ready/elasticpymodels',
-    packages=find_packages(include=['elasticpymodels']),
+    url='https://github.com/g20ready/elasticmodelspy',
+    packages=find_packages(include=['elasticmodelspy']),
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
     zip_safe=False,
-    keywords='elasticpymodels',
+    keywords='elasticmodelspy',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',

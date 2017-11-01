@@ -1,4 +1,7 @@
-from elasticpymodels.base import Serializable
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from elasticmodelspy.base import Serializable
 
 class AnalysisSerializable(Serializable):
     def __init__(self, name):

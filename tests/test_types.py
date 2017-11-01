@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `elasticpymodels.analysis`"""
+"""Tests for `elasticmodelspy.analysis`"""
 
 
 

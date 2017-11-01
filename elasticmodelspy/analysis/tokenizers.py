@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from elasticpymodels.analysis.base import AnalysisSerializable
+from elasticmodelspy.analysis.base import AnalysisSerializable
 
 class Tokenizer(AnalysisSerializable):
     def __init__(self, name, type):

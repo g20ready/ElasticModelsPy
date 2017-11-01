@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `elasticpymodels.analysis`"""
+"""Tests for `elasticmodelspy.analysis`"""
 
-from elasticpymodels.analysis.tokenizers import Tokenizer, StandardTokenizer, NGramTokenizer, EdgeNGramTokenizer
+from elasticmodelspy.analysis.tokenizers import Tokenizer, StandardTokenizer, NGramTokenizer, EdgeNGramTokenizer
 
 def test_tokenizer():
     tokenizer = Tokenizer('tokenizer', 'standard')

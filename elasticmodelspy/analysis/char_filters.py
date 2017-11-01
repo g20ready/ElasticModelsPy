@@ -1,4 +1,7 @@
-from elasticpymodels.analysis.base import AnalysisSerializable
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from elasticmodelspy.analysis.base import AnalysisSerializable
 
 class CharFilter(AnalysisSerializable):
     def __init__(self, name, type):
