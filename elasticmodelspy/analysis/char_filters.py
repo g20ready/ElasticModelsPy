@@ -8,14 +8,14 @@ class CharFilter(AnalysisSerializable):
         super(CharFilter, self).__init__(name)
         self.type = type
 
-    def __analysis_data__(self):
+    def serialize_data(self):
         data = dict(
             type=self.type
         )
-        data.update(self.__char_filter_data__())
+        data.update(self._serialize_char_filter_data())
         return data
 
-    def __char_filter_data__(self):
+    def _serialize_char_filter_data(self):
         return dict()
 
 class HtmlCharFilter(CharFilter):
@@ -27,7 +27,7 @@ class HtmlCharFilter(CharFilter):
         super(HtmlCharFilter, self).__init__(name, 'html_strip')
         self.escaped_tags = escaped_tags
 
-    def __char_filter_data__(self):
+    def _serialize_char_filter_data(self):
         return dict(
             escaped_tags=self.escaped_tags
         )
@@ -54,7 +54,7 @@ class MappingCharFilter(CharFilter):
         self.mappings = mappings
         self.mappings_path = mappings_path
 
-    def __char_filter_data__(self):
+    def _serialize_char_filter_data(self):
         if self.mappings_path:
             return dict(
                 mappings_path=self.mappings_path
@@ -76,7 +76,7 @@ class PatternReplaceCharFilter(CharFilter):
         self.replacement = replacement
         self.flag = flags
 
-    def __char_filter_data__(self):
+    def _serialize_char_filter_data(self):
         data = dict(
             pattern = self.pattern,
             replacement = self.replacement
