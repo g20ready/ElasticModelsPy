@@ -11,14 +11,14 @@ class TokenFilter(AnalysisSerializable):
         super(TokenFilter, self).__init__(name)
         self.type = type
 
-    def __analysis_data__(self):
+    def serialize_data(self):
         data = dict(
             type=self.type
         )
-        data.update(self.__token_filter_data__())
+        data.update(self._serialize_token_filter_data())
         return data
 
-    def __token_filter_data__(self):
+    def _serialize_token_filter_data(self):
         return dict()
 
 
@@ -27,7 +27,7 @@ class AsciiFoldTokenFilter(TokenFilter):
         super(AsciiFoldTokenFilter, self).__init__(name, 'asciifolding')
         self.preserve_original=preserve_original
 
-    def __token_filter_data__(self):
+    def _serialize_token_filter_data(self):
         return dict(
             preserve_original=self.preserve_original
         )
@@ -40,7 +40,7 @@ class LengthTokenFilter(TokenFilter):
         self.min = min
         self.max = max
 
-    def __token_filter_data__(self):
+    def _serialize_token_filter_data(self):
         return dict(
             min=self.min,
             max=self.max
@@ -52,7 +52,7 @@ class LanguageTokenFilter(TokenFilter):
         super(LanguageTokenFilter, self).__init__(name, type)
         self.language = language
 
-    def __token_filter_data__(self):
+    def _serialize_token_filter_data(self):
         return dict(
             language=self.language
         )
@@ -68,7 +68,7 @@ class StopwordsTokenFilter(TokenFilter):
         super(StopwordsTokenFilter, self).__init__(name, 'stopwords')
         self.stopwords = stopwords
 
-    def __token_filter_data__(self):
+    def _serialize_token_filter_data(self):
         return dict(
             stopwords=self.stopwords
         )

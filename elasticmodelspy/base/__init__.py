@@ -5,5 +5,8 @@ class Serializable(object):
     def __init__(self):
         pass
 
-    def __serialize__(self):
+    def serialize(self):
+        """
+        :return:        dict repr of the object.
+        """
         raise NotImplemented()

@@ -4,20 +4,26 @@
 from elasticmodelspy.analysis.base import AnalysisSerializable
 
 from elasticmodelspy.analysis.tokenizers import Tokenizer
+from elasticmodelspy.analysis.char_filters import CharFilter
+from elasticmodelspy.analysis.token_filters import TokenFilter
+
 
 class Analyzer(AnalysisSerializable):
     def __init__(self, name, type):
         super(Analyzer, self).__init__(name)
         self.type = type
 
-    def __serialize__(self):
+    def serialize_data(self):
         data = dict(
             type=self.type
         )
-        data.update(self.__analyzer_data__())
+        data.update(self._serialize_analyzer_data())
         return data
 
-    def __analyzer_data__(self):
+    def _serialize_analyzer_data(self):
+        """
+        :return:        dict to be used for analyzer.
+        """
         return dict()
 
 
@@ -45,7 +51,7 @@ class StandardAnalyzer(Analyzer):
         self.stopwords = stopwords
         self.stopwords_path = stopwords_path
 
-    def __analyzer_data__(self):
+    def _serialize_analyzer_data(self):
         data = dict()
         if self.max_token_length:
             data['max_token_length'] = self.max_token_length
@@ -89,7 +95,7 @@ class StopAnalyzer(Analyzer):
         self.stopwords = stopwords
         self.stopwords_path = stopwords_path
 
-    def __analyzer_data__(self):
+    def _serialize_analyzer_data(self):
         data = dict()
         if self.stopwords:
             data['stopwords'] = self.stopwords
@@ -130,7 +136,7 @@ class PatternAnalyzer(Analyzer):
         self.stopwords = stopwords
         self.stopwords_path = stopwords_path
 
-    def __analyzer_data__(self):
+    def _serialize_analyzer_data(self):
         data = dict(
             pattern=self.pattern,
             lowercase=self.lowercase
@@ -153,9 +159,8 @@ class CustomAnalyzer(Analyzer):
     * a tokenizer
     * zero or more token filters.
     """
-    def __init__(self, name, tokenizer, char_filters, token_filters):
+    def __init__(self, name, tokenizer, char_filters=list(), token_filters=list(), position_increment_gap=100):
         """
-
         :param name:
         :param tokenizer:
         :param char_filters:
@@ -165,39 +170,75 @@ class CustomAnalyzer(Analyzer):
         self.tokenizer = self.__validate_tokenizer__(tokenizer)
         self.char_filters = self.__validate_char_filters__(char_filters)
         self.token_filters = self.__validate_token_filters__(token_filters)
+        self.position_increment_gap = position_increment_gap
 
     def __validate_tokenizer__(self, tokenizer):
-        if not isinstance(tokenizer, str) and not isinstance(tokenizer, Tokenizer):
-            raise ValueError('Argument tokenizer should be of class str or elasticmodelspy.analysis.tokenizers.Tokenizer.')
+        if not isinstance(tokenizer, Tokenizer):
+            raise ValueError('Argument tokenizer should be an instance of '
+                             'elasticmodelspy.analysis.tokenizers.Tokenizer.')
         return tokenizer
 
     def __validate_char_filters__(self, char_filters):
-        return None
+        if not isinstance(char_filters, list):
+            char_filters = [char_filters]
+
+        for char_filter in char_filters:
+            if not isinstance(char_filter, CharFilter):
+                raise ValueError('{0} is not a char filter. Char filters should be an instance '
+                                 'of elasticmodelspy.analysis.char_filters.CharFilter'.format(char_filter))
+
+        return char_filters
 
     def __validate_token_filters__(self, token_filters):
-        return None
+        if not isinstance(token_filters, list):
+            token_filters = [token_filters]
 
+        for token_filter in token_filters:
+            if not isinstance(token_filter, TokenFilter):
+                raise ValueError('{0} is not a char filter. Char filters should be an instance '
+                                 'of elasticmodelspy.analysis.token_filters.TokenFilter'.format(token_filter))
 
-    # def __get_char_filters__(self):
-    #     """
-    #     Char filter settings this analyzer references.
-    #
-    #     :return:        Dictionary mapping char filter names to char filter settings.
-    #     """
-    #     return dict()
-    #
-    # def __get_token_filters__(self):
-    #     """
-    #     Token filter settings this analyzer references.
-    #
-    #     :return:        Dictionary mapping token filter names to token filter settings.
-    #     """
-    #     return dict()
-    #
-    # def __get_tokenizers__(self):
-    #     """
-    #     Returns the tokenizer settings this analyzer references.
-    #
-    #     :return:        Dictionary mapping tokenizer names to tokenizer settings.
-    #     """
-    #     return dict()
+        return token_filters
+
+    def _serialize_analyzer_data(self):
+        data = dict(
+            tokenizer=str(self.tokenizer)
+        )
+        if self.char_filters:
+            data['char_filter'] = [str(char_filter)
+                                   for char_filter in self.char_filters]
+        if self.token_filters:
+            data['token_filter'] = [str(token_filter)
+                                    for token_filter in self.token_filters]
+        data['position_increment_gap'] = self.position_increment_gap
+        return data
+
+    def char_filter_data(self):
+        """
+        Char filter settings this analyzer references.
+
+        :return:        Dictionary mapping char filter names to char filter settings.
+        """
+        return {
+            str(char_filter): char_filter.serialize_data()
+            for char_filter in self.char_filters
+        }
+
+    def token_filter_data(self):
+        """
+        Token filter settings this analyzer references.
+
+        :return:        Dictionary mapping token filter names to token filter settings.
+        """
+        return {
+            str(token_filter): token_filter.serialize_data()
+            for token_filter in self.token_filters
+        }
+
+    def tokenizer_data(self):
+        """
+        Returns the tokenizer settings this analyzer references.
+
+        :return:        Dictionary mapping tokenizer names to tokenizer settings.
+        """
+        return self.tokenizer.serialize()
