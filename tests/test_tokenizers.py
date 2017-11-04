@@ -7,7 +7,7 @@ from elasticmodelspy.analysis.tokenizers import Tokenizer, StandardTokenizer, NG
 
 def test_tokenizer():
     tokenizer = Tokenizer('tokenizer', 'standard')
-    assert tokenizer.__serialize__() == {
+    assert tokenizer.serialize() == {
         'tokenizer': {
             'type': 'standard'
         }
@@ -15,7 +15,7 @@ def test_tokenizer():
 
 def test_standard_tokenizer():
     standard_tokenizer = StandardTokenizer('standard_tokenizer', max_token_length=200)
-    assert standard_tokenizer.__serialize__() == {
+    assert standard_tokenizer.serialize() == {
         'standard_tokenizer': {
             'type': 'standard',
             'max_token_length': 200
@@ -24,7 +24,7 @@ def test_standard_tokenizer():
 
 def test_ngram_tokenizer():
     ngram_tokenizer = NGramTokenizer('ngram', 2, 10)
-    assert ngram_tokenizer.__serialize__() == {
+    assert ngram_tokenizer.serialize() == {
         'ngram': {
             'type': 'ngram',
             'min_gram': 2,
@@ -35,7 +35,7 @@ def test_ngram_tokenizer():
 
 def test_edge_ngram_tokenizer():
     edge_ngram_tokenizer = EdgeNGramTokenizer('edge_ngram', 2, 12)
-    assert edge_ngram_tokenizer.__serialize__() == {
+    assert edge_ngram_tokenizer.serialize() == {
         'edge_ngram': {
             'type': 'edge_ngram',
             'min_gram': 2,
