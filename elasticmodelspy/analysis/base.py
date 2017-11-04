@@ -8,10 +8,16 @@ class AnalysisSerializable(Serializable):
         super(AnalysisSerializable, self).__init__()
         self.name = name
 
-    def __serialize__(self):
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def serialize(self):
         return {
-            self.name: self.__analysis_data__()
+            self.name: self.serialize_data()
         }
 
-    def __analysis_data__(self):
+    def serialize_data(self):
         raise NotImplemented()

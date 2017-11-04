@@ -8,14 +8,14 @@ class Tokenizer(AnalysisSerializable):
         super(Tokenizer, self).__init__(name)
         self.type = type
 
-    def __analysis_data__(self):
+    def serialize_data(self):
         data = dict(
             type=self.type
         )
-        data.update(self.__tokenizer_data__())
+        data.update(self._serialize_tokenizer_data())
         return data
 
-    def __tokenizer_data__(self):
+    def _serialize_tokenizer_data(self):
         return dict()
 
 
@@ -28,7 +28,7 @@ class StandardTokenizer(Tokenizer):
         super(StandardTokenizer, self).__init__(name, 'standard')
         self.max_token_length = max_token_length
 
-    def __tokenizer_data__(self):
+    def _serialize_tokenizer_data(self):
         return dict(
             max_token_length=self.max_token_length
         )
@@ -49,7 +49,7 @@ class NGramTokenizer(Tokenizer):
         self.max_gram = max_gram
         self.token_chars = token_chars
 
-    def __tokenizer_data__(self):
+    def _serialize_tokenizer_data(self):
         return dict(
             min_gram=self.min_gram,
             max_gram=self.max_gram,
@@ -70,7 +70,7 @@ class EdgeNGramTokenizer(Tokenizer):
         self.max_gram = max_gram
         self.token_chars = token_chars
 
-    def __tokenizer_data__(self):
+    def _serialize_tokenizer_data(self):
         return dict(
             min_gram=self.min_gram,
             max_gram=self.max_gram,
