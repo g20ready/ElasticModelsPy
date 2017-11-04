@@ -126,12 +126,11 @@ class StopTokenFilter(TokenFilter):
 
 
 class BaseWordDelimiterTokenFilter(TokenFilter):
-    def __init__(self, name, type, protected_words, generate_word_parts=True,
-                 generate_number_parts=True, catenate_words=False,
-                 catenate_numbers=False, catenate_all=False,
+    def __init__(self, name, type, protected_words, protected_words_path,
+                 generate_word_parts=True, generate_number_parts=True,
+                 catenate_words=False, catenate_numbers=False, catenate_all=False,
                  split_on_case_change=True, preserve_original =False,
-                 split_on_numerics=True, stem_english_possessive=True,
-                 protected_words_path='config/' ):
+                 split_on_numerics=True, stem_english_possessive=True):
 
         super(BaseWordDelimiterTokenFilter, self).__init__(name, type)
         self.generate_word_parts = generate_word_parts
@@ -144,12 +143,13 @@ class BaseWordDelimiterTokenFilter(TokenFilter):
         self.split_on_numerics = split_on_numerics
         self.stem_english_possessive = stem_english_possessive
 
-        if protected_words:
+        if protected_words_path:
+            self.protected_words = []
+            self.protected_words_path = protected_words_path
+        else:
             assert isinstance(protected_words, list)
             self.protected_words = protected_words
-            self.protected_words_path = None
-        else:
-            self.protected_words_path = protected_words_path
+            self.protected_words_path = u""
 
     def _serialize_token_filter_data(self):
         return dict(
@@ -199,6 +199,7 @@ class StemmerOverrideTokenFilter(TokenFilter):
             self.rules = []
             self.rules_path = rules_path
         else:
+            assert isinstance(rules, list)
             self.rules = rules
             self.rules_path = u''
 
@@ -217,6 +218,7 @@ class KeywordMarkerTokenFilter(TokenFilter):
             self.keywords = []
             self.keywords_path = keywords_path
         else:
+            assert isinstance(keywords, list)
             self.keywords = keywords
             self.keywords_path = u''
         self.keywords_pattern = keywords_pattern
@@ -228,6 +230,31 @@ class KeywordMarkerTokenFilter(TokenFilter):
             keywords_path = self.keywords_path,
             keywords_pattern = self.keywords_pattern,
             ignore_case = self.ignore_case
+        )
+
+
+class ShingleMarkerTokenFilter(TokenFilter):
+    def __init__(self,name, max_shingle_size=2, min_shingle_size=2,
+                 output_unigrams=True, output_unigrams_if_no_shingles=False,
+                 token_separator=u" ", filler_token=u"_"):
+        super(ShingleMarkerTokenFilter, self).__init__(name, 'shingle')
+
+
+        self.max_shingle_size= max_shingle_size
+        self.min_shingle_size = min_shingle_size
+        self.output_unigrams = output_unigrams
+        self.output_unigrams_if_no_shingles = output_unigrams_if_no_shingles
+        self.token_separator = token_separator
+        self.filler_token = filler_token
+
+    def _serialize_token_filter_data(self):
+        return dict(
+            max_shingle_size = self.max_shingle_size,
+            min_shingle_size = self.min_shingle_size,
+            output_unigrams = self.output_unigrams,
+            output_unigrams_if_no_shingles = self.output_unigrams_if_no_shingles,
+            token_separator = self.token_separator,
+            filler_token = self.filler_token
         )
 
 class KStemTokenFiltrer(TokenFilter):
@@ -331,11 +358,17 @@ class LimitTokenCountTokenFilter(TokenFilter):
         )
 
 class CommonGramsTokenFilter(TokenFilter):
-    def __init__(self, name, common_words, common_words_path='config/',
+    def __init__(self, name, common_words, common_words_path,
                  ignore_case=False, query_mode=False):
         super(CommonGramsTokenFilter, self).__init__(name, 'common_grams')
-        self.common_words = common_words
-        self.common_words_path = common_words_path
+        if common_words_path:
+            self.common_words = []
+            self.common_words_path = common_words_path
+        else:
+            assert isinstance(common_words, list)
+            self.common_words = common_words
+            self.common_words_path = u""
+
         self.ignore_case = ignore_case
         self.query_mode = query_mode
 

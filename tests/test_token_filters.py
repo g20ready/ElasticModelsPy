@@ -113,8 +113,11 @@ def test_stop_token_filter():
 
 
 def test_word_delimeter_token_filter():
+    test_protected_words = ["$ => DIGIT", "% => DIGIT", ". => DIGIT"]
+    test_protected_words_path = 'analysis/word_delimiter.txt'
     test_word_delimeter_filter = WordDelimiterTokenFilter(name='word_delimiter_filter',
-                                                          protected_words=['test', 'word', 'delimiter', 'filter'])
+                                                          protected_words=test_protected_words,
+                                                          protected_words_path=test_protected_words_path )
     assert test_word_delimeter_filter.serialize() == {
         'word_delimiter_filter' : {
             'type': 'word_delimiter',
@@ -127,14 +130,17 @@ def test_word_delimeter_token_filter():
             'preserve_original': False,
             'split_on_numerics': True,
             'stem_english_possessive': True,
-            'protected_words_path': None,
-            'protected_words': ['test', 'word', 'delimiter', 'filter']
+            'protected_words_path':test_protected_words_path,
+            'protected_words': []
         }
     }
 
 def test_word_delimeter_graph_token_filter():
-    test_word_delimeter_graph_filter = WordDelimeterGraphTokenFilter('word_delimiter_graph_filter',
-                                                                     protected_words=['test', 'word', 'delimiter', 'filter'])
+    test_protected_words = ["$ => DIGIT", "% => DIGIT", ". => DIGIT"]
+    test_protected_words_path = 'analysis/word_delimiter.txt'
+    test_word_delimeter_graph_filter = WordDelimeterGraphTokenFilter(name='word_delimiter_graph_filter',
+                                                                protected_words=test_protected_words,
+                                                                protected_words_path=test_protected_words_path)
     assert test_word_delimeter_graph_filter.serialize() == {
         'word_delimiter_graph_filter' : {
             'type': 'word_delimiter_graph',
@@ -147,8 +153,8 @@ def test_word_delimeter_graph_token_filter():
             'preserve_original': True,
             'split_on_numerics': True,
             'stem_english_possessive': True,
-            'protected_words_path': None,
-            'protected_words': ['test', 'word', 'delimiter', 'filter']
+            'protected_words_path': test_protected_words_path,
+            'protected_words': []
         }
     }
 
@@ -202,6 +208,19 @@ def test_kstem_token_filter():
         }
     }
 
+def test_shingle_token_filter():
+    test_shingle_filter = ShingleMarkerTokenFilter('shingle_token_filter')
+    assert test_shingle_filter.serialize() == {
+        'shingle_token_filter': {
+            'type': 'shingle',
+            'max_shingle_size': 2,
+            'min_shingle_size': 2,
+            'output_unigrams': True,
+            'output_unigrams_if_no_shingles': False,
+            'token_separator': u" ",
+            'filler_token': u"_"
+        }
+    }
 
 def test_synonym_token_filter():
     test_synonym_filter = SynonymTokenFilter('synonym_token_filter', 'analysis/synonym.txt')
@@ -290,12 +309,15 @@ def test_limit_token_count_token_filter():
     }
 
 def test_common_grams_token_filter():
-    test_common_grams_filter = CommonGramsTokenFilter('common_grams_filter', ["a", "an", "the"])
+    test_common_words = ["a", "an", "the"]
+    test_common_words_path = 'analysis/test_common_words.txt'
+    test_common_grams_filter = CommonGramsTokenFilter('common_grams_filter',test_common_words,
+                                                      test_common_words_path)
     assert test_common_grams_filter.serialize() == {
         'common_grams_filter' : {
             'type': 'common_grams',
-            'common_words':  ["a", "an", "the"],
-            'common_words_path': 'config/',
+            'common_words':  [],
+            'common_words_path': test_common_words_path,
             'ignore_case': False,
             'query_mode': False
         }
