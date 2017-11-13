@@ -19,9 +19,10 @@ class DocumentMeta(type):
 
 class Document(with_metaclass(DocumentMeta, object)):
 
-    def mapping(self):
+    @classmethod
+    def mapping(cls):
         mapping = dict()
-        for key, value in self.__dict__.items():
+        for key, value in cls.__dict__.items():
             if isinstance(value, BaseField) and value:
                 mapping.update(value.serialize())
         return mapping
