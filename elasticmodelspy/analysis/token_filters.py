@@ -3,10 +3,10 @@
 
 import sys
 
-from elasticmodelspy.analysis.base import AnalysisSerializable
+from elasticmodelspy.base import Serializable
 
 
-class TokenFilter(AnalysisSerializable):
+class TokenFilter(Serializable):
     def __init__(self, name, type):
         super(TokenFilter, self).__init__(name)
         self.type = type

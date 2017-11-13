@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from elasticmodelspy.analysis.base import AnalysisSerializable
+from elasticmodelspy.base import Serializable
 
 from elasticmodelspy.analysis.tokenizers import Tokenizer
 from elasticmodelspy.analysis.char_filters import CharFilter
 from elasticmodelspy.analysis.token_filters import TokenFilter
 
 
-class Analyzer(AnalysisSerializable):
+class Analyzer(Serializable):
     def __init__(self, name, type):
         super(Analyzer, self).__init__(name)
         self.type = type

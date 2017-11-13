@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from elasticmodelspy.analysis.base import AnalysisSerializable
+from elasticmodelspy.base import Serializable
 
-class CharFilter(AnalysisSerializable):
+class CharFilter(Serializable):
     def __init__(self, name, type):
         super(CharFilter, self).__init__(name)
         self.type = type
