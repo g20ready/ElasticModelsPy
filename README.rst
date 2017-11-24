@@ -30,8 +30,10 @@ provide abstractions for working with ElasticSearch.
 Features
 --------
 
-* @giannhskod Pass the token filters from https://www.elastic.co/guide/en/elasticsearch/reference/5.5/analysis-lowercase-tokenfilter.html
-* @max Finish Analyzer structure
+* @giannhskod Pass the token filters from -> https://www.elastic.co/guide/en/elasticsearch/reference/5.5/analysis-lowercase-tokenfilter.html
+* @max Finish Analyzer structure -> Done
+* @max Document representation for documents
+* @max Field mapping implementation for Fields
 
 
 Credits
