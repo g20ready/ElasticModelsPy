@@ -9,7 +9,6 @@ from weakref import WeakKeyDictionary
 
 from elasticmodelspy.base import Serializable
 
-
 class BaseField(Serializable):
     def __init__(self, name=None):
         super(BaseField, self).__init__(name)
@@ -23,7 +22,7 @@ class BaseField(Serializable):
 
     def __get__(self, instance, owner):
         if instance is None: return self
-        return self._values.get(instance, 0)
+        return self._values.get(instance)
 
     def __set__(self, instance, value):
         self._validate_(value)

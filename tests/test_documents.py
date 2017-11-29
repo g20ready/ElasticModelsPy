@@ -20,6 +20,15 @@ def test_document_mapping():
         last_name={}
     )
 
+def test_document_instance_init():
+    doc = SimpleDocument(**{
+        'first_name': 'Marsel',
+        'last_name': 'Tzatzo'
+    })
+
+    assert doc.first_name == 'Marsel'
+    assert doc.sname == 'Tzatzo'
+
 
 def test_document_instance_values():
     doc = SimpleDocument()
@@ -28,3 +37,11 @@ def test_document_instance_values():
 
     assert doc.first_name == 'Marsel'
     assert doc.sname == 'Tzatzo'
+
+    print(doc.document())
+
+    assert doc.document() == {
+        'first_name': 'Marsel',
+        'last_name': 'Tzatzo'
+    }
+
