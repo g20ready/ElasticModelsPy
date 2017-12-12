@@ -38,8 +38,6 @@ def test_document_instance_values():
     assert doc.first_name == 'Marsel'
     assert doc.sname == 'Tzatzo'
 
-    print(doc.document())
-
     assert doc.document() == {
         'first_name': 'Marsel',
         'last_name': 'Tzatzo'
