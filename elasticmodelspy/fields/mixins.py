@@ -5,6 +5,9 @@
 """
 Created by Marsel Tzatzo on 04/11/2017.
 """
+class TypeMixin(object):
+    field_type = None
+
 
 class FielddataMixin(object):
     fielddata = False
