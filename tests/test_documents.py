@@ -7,7 +7,7 @@ Created by Marsel Tzatzo on 13/11/2017.
 """
 
 from elasticmodelspy.index import Document
-from elasticmodelspy.fields.core import BaseField
+from elasticmodelspy.fields import BaseField
 
 class SimpleDocument(Document):
     first_name = BaseField()
@@ -15,10 +15,14 @@ class SimpleDocument(Document):
 
 def test_document_mapping():
     # Test mapping
-    assert SimpleDocument.mapping() == dict(
-        first_name={},
-        last_name={}
-    )
+    assert SimpleDocument.mapping() == {
+        'first_name': {
+            'type': 'base'
+        },
+        'last_name': {
+            'type': 'base'
+        }
+    }
 
 def test_document_instance_init():
     doc = SimpleDocument(**{
