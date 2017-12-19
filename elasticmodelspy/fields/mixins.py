@@ -6,14 +6,9 @@
 Created by Marsel Tzatzo on 04/11/2017.
 """
 class TypeMixin(object):
-    field_type = None
+    field_type = ''
 
 
-class FielddataMixin(object):
-    fielddata = False
-    # fielddata_frequency_filter =
+class AvailablePropsMixin(object):
+    available_props = []
 
-
-class IndexMixin(object):
-    index = True
-    index_options = 'positions'

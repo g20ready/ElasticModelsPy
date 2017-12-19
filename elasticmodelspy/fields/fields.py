@@ -28,9 +28,6 @@ class FieldMeta(type):
 
 
 class BaseField(with_metaclass(FieldMeta, TypeMixin, AvailablePropsMixin, Serializable)):
-    #
-    field_type = ''
-    available_props = []
     def __init__(self, name=None, **kwargs):
         super(BaseField, self).__init__(name)
         self._values = WeakKeyDictionary()
