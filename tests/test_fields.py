@@ -15,12 +15,22 @@ def test_field_without_type():
             pass
     except Exception as ex:
         assert isinstance(ex, ValueError)
-        assert 'Subclasses of BaseField must provide a value for type.' == ex.args[0]
+        assert "Subclasses of BaseField must provide a value for 'field_type'." == ex.args[0]
+
+def test_field_without_available_props():
+    try:
+        class FieldWithoutAvailableProps(BaseField):
+            field_type = 'what'
+    except Exception as ex:
+        assert isinstance(ex, ValueError)
+        assert "Subclasses of BaseField must provide a value for 'available_props'." == ex.args[0]
 
 def test_field_type():
     class SimpleField(BaseField):
         field_type = 'simple'
+        available_props = ['index']
 
-    assert SimpleField().serialize_data() == {
-        'type': 'simple'
+    assert SimpleField(name='simple', index=False).serialize_data() == {
+        'type': 'simple',
+        'index': False
     }
