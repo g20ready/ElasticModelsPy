@@ -5,40 +5,49 @@
 """
 Created by Marsel Tzatzo on 03/11/2017.
 """
-from six import with_metaclass
+from six import with_metaclass, string_types
 
 from weakref import WeakKeyDictionary
 
 from elasticmodelspy.base import Serializable
+from elasticmodelspy.analysis import Analyzer
 
-from .mixins import TypeMixin, IndexMixin, FielddataMixin
+from .mixins import TypeMixin, AvailablePropsMixin
 
 
 class FieldMeta(type):
     def __new__(meta, name, bases, class_dict):
         # Don't validate Base Field
-        if bases != (Serializable, TypeMixin,):
+        if name != 'BaseField':
             if not class_dict.get('field_type'):
-                raise ValueError('Subclasses of BaseField must provide a value for type.')
+                raise ValueError("Subclasses of BaseField must provide a value for 'field_type'.")
+            if not class_dict.get('available_props'):
+                raise ValueError("Subclasses of BaseField must provide a value for 'available_props'.")
         cls = type.__new__(meta, name, bases, class_dict)
         return cls
 
 
-class BaseField(with_metaclass(FieldMeta, TypeMixin, Serializable)):
-    field_type = 'base'
-    def __init__(self, name=None):
+class BaseField(with_metaclass(FieldMeta, TypeMixin, AvailablePropsMixin, Serializable)):
+    #
+    field_type = ''
+    available_props = []
+    def __init__(self, name=None, **kwargs):
         super(BaseField, self).__init__(name)
         self._values = WeakKeyDictionary()
+        for key in kwargs:
+            print(key)
+            setattr(self, key, kwargs.get(key))
 
     def serialize_data(self):
         data = dict(
             type=self.field_type
         )
-        dict.update(self._serialize_field_data())
+        data.update({
+            key: getattr(self, key, None)
+            for key in self.available_props
+            if hasattr(self, key)
+        })
         return data
-
-    def _serialize_field_data(self):
-        return dict()
 
     def __get__(self, instance, owner):
         if instance is None: return self
@@ -54,24 +63,59 @@ class BaseField(with_metaclass(FieldMeta, TypeMixin, Serializable)):
         """
         pass
 
-class TextField(IndexMixin, FielddataMixin, BaseField):
+class TextField(BaseField):
     field_type = 'text'
-    def __init__(self, name=None, fielddata=False, index=True, index_options='positions', **kwargs):
-        super(TextField, self).__init__('text', name)
-        self.fielddata = fielddata
-        self.index = index
-        self.index_options = index_options
+    available_props = [
+        'analyzer',
+        'boost',
+        'eager_global_ordinals',
+        'fielddata',
+        'fielddata_frequency_filter',
+        'fields',
+        'index',
+        'index_options',
+        'norms',
+        'position_increment_gap',
+        'store',
+        'search_analyzer',
+        'search_quote_analyzer',
+        'similarity',
+        'term_vector'
+    ]
+    def __init__(self, name=None, **kwargs):
+        super(TextField, self).__init__(name, **kwargs)
 
-    def _serialize_field_data(self):
-        return dict(
-            fielddata=self.fielddata,
-            index=self.index,
-            index_options=self.index_options
-        )
+    @property
+    def analyzer(self):
+        if isinstance(self._analyzer, Analyzer):
+            return self._analyzer.name
+        return self._analyzer
+
+    @analyzer.setter
+    def analyzer(self, value):
+        if not isinstance(value, Analyzer) and not isinstance(value, string_types):
+            raise ValueError("Property 'analyzer' must be an instance of elasticmodelspy.analysis.Analyzer "
+                             "or an instance of string type.")
+        self._analyzer = value
+
 
 class KeywordField(BaseField):
     field_type = 'keyword'
-    def __init__(self, name=None):
+    available_props = [
+        'boost',
+        'doc_values',
+        'eager_global_ordinals',
+        'fields',
+        'ignore_above',
+        'index',
+        'index_options',
+        'norms',
+        'null_value',
+        'store',
+        'similarity',
+        'normalizer'
+    ]
+    def __init__(self, name=None, **kwargs):
         super(KeywordField, self).__init__(name)
 
     def _serialize_field_data(self):
