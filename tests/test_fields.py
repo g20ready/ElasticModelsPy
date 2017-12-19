@@ -41,3 +41,30 @@ def test_field_type():
         'type': 'simple',
         'index': False
     }
+
+def test_text_field():
+    from elasticmodelspy.fields import TextField
+    from elasticmodelspy.analysis.analyzers import StandardAnalyzer
+
+    # text field with standard analyzer class
+    standard_analyzer = StandardAnalyzer('standard')
+    text_field = TextField(name='analyzer_class_text_field',
+                           analyzer=standard_analyzer)
+    assert text_field.__getattribute__('analyzer') == 'standard'
+
+    # text field with string analyzer
+    text_field = TextField(name='analyzer_class_text_field',
+                           analyzer=standard_analyzer.name)
+    assert text_field.__getattribute__('analyzer') == 'standard'
+
+    # text field with error analyzer
+    try:
+        text_field = TextField(name='analyzer_class_text_field', analyzer=123)
+    except Exception as ex:
+        assert isinstance(ex, ValueError)
+        assert "Property 'analyzer' must be an instance of elasticmodelspy.analysis.Analyzer " \
+               "or an instance of string type." == ex.args[0]
+
+
+
+

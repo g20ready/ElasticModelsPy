@@ -95,18 +95,13 @@ class TextField(BaseField):
     def __init__(self, name=None, **kwargs):
         super(TextField, self).__init__(name, **kwargs)
 
-    @property
-    def analyzer(self):
-        if isinstance(self._analyzer, Analyzer):
-            return self._analyzer.name
-        return self._analyzer
-
-    @analyzer.setter
-    def analyzer(self, value):
-        if not isinstance(value, Analyzer) and not isinstance(value, string_types):
-            raise ValueError("Property 'analyzer' must be an instance of elasticmodelspy.analysis.Analyzer "
-                             "or an instance of string type.")
-        self._analyzer = value
+    def validate_analyzer(self, value):
+        if isinstance(value, Analyzer):
+            return value.name
+        elif isinstance(value, string_types):
+            return value
+        raise ValueError("Property 'analyzer' must be an instance of elasticmodelspy.analysis.Analyzer "
+                         "or an instance of string type.")
 
 
 class KeywordField(BaseField):
