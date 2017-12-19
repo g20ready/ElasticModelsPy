@@ -7,20 +7,20 @@ Created by Marsel Tzatzo on 13/11/2017.
 """
 
 from elasticmodelspy.index import Document
-from elasticmodelspy.fields import BaseField
+from elasticmodelspy.fields import KeywordField
 
 class SimpleDocument(Document):
-    first_name = BaseField()
-    sname = BaseField(name='last_name')
+    first_name = KeywordField()
+    sname = KeywordField(name='last_name')
 
 def test_document_mapping():
     # Test mapping
     assert SimpleDocument.mapping() == {
         'first_name': {
-            'type': 'base'
+            'type': 'keyword'
         },
         'last_name': {
-            'type': 'base'
+            'type': 'keyword'
         }
     }
 
