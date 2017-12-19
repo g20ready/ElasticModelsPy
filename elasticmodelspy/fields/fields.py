@@ -12,7 +12,7 @@ from weakref import WeakKeyDictionary
 from elasticmodelspy.base import Serializable
 from elasticmodelspy.analysis import Analyzer
 
-from .mixins import TypeMixin, AvailablePropsMixin
+from .mixins import FieldTypeMixin, FieldAttributesMixin
 
 
 class FieldMeta(type):
@@ -21,18 +21,28 @@ class FieldMeta(type):
         if name != 'BaseField':
             if not class_dict.get('field_type'):
                 raise ValueError("Subclasses of BaseField must provide a value for 'field_type'.")
-            if not class_dict.get('available_props'):
-                raise ValueError("Subclasses of BaseField must provide a value for 'available_props'.")
+            if not class_dict.get('field_attributes'):
+                raise ValueError("Subclasses of BaseField must provide a value for 'field_attributes'.")
         cls = type.__new__(meta, name, bases, class_dict)
         return cls
 
 
-class BaseField(with_metaclass(FieldMeta, TypeMixin, AvailablePropsMixin, Serializable)):
+class BaseField(with_metaclass(FieldMeta, FieldTypeMixin, FieldAttributesMixin, Serializable)):
     def __init__(self, name=None, **kwargs):
         super(BaseField, self).__init__(name)
         self._values = WeakKeyDictionary()
         for key in kwargs:
-            setattr(self, key, kwargs.get(key))
+            # Validate that the current value is in field attributes.
+            if not key in self.field_attributes:
+                raise ValueError("'%s' is not a valid attribute." % key)
+
+            # if validate function is defined for the given key
+            # the value returned is assigned.
+            if hasattr(self, 'validate_%s' % key):
+                value = getattr(self, 'validate_%s' % key)(kwargs.get(key))
+            else:
+                value = kwargs.get(key)
+            setattr(self, key, value)
 
     def serialize_data(self):
         data = dict(
@@ -40,7 +50,7 @@ class BaseField(with_metaclass(FieldMeta, TypeMixin, AvailablePropsMixin, Serial
         )
         data.update({
             key: getattr(self, key, None)
-            for key in self.available_props
+            for key in self.field_attributes
             if hasattr(self, key)
         })
         return data
@@ -62,9 +72,10 @@ class BaseField(with_metaclass(FieldMeta, TypeMixin, AvailablePropsMixin, Serial
         """
         pass
 
+
 class TextField(BaseField):
     field_type = 'text'
-    available_props = [
+    field_attributes = [
         'analyzer',
         'boost',
         'eager_global_ordinals',
@@ -100,7 +111,7 @@ class TextField(BaseField):
 
 class KeywordField(BaseField):
     field_type = 'keyword'
-    available_props = [
+    field_attributes = [
         'boost',
         'doc_values',
         'eager_global_ordinals',

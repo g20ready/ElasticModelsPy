@@ -5,10 +5,10 @@
 """
 Created by Marsel Tzatzo on 04/11/2017.
 """
-class TypeMixin(object):
+class FieldTypeMixin(object):
     field_type = ''
 
 
-class AvailablePropsMixin(object):
-    available_props = []
+class FieldAttributesMixin(object):
+    field_attributes = []
 
