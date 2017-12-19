@@ -32,7 +32,6 @@ class BaseField(with_metaclass(FieldMeta, TypeMixin, AvailablePropsMixin, Serial
         super(BaseField, self).__init__(name)
         self._values = WeakKeyDictionary()
         for key in kwargs:
-            print(key)
             setattr(self, key, kwargs.get(key))
 
     def serialize_data(self):
@@ -53,6 +52,9 @@ class BaseField(with_metaclass(FieldMeta, TypeMixin, AvailablePropsMixin, Serial
     def __set__(self, instance, value):
         self._validate_(value)
         self._values[instance] = value
+
+    def __delete__(self, instance):
+        del self._values[instance]
 
     def _validate_(self, value):
         """
