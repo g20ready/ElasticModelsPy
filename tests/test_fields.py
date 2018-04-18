@@ -7,7 +7,7 @@ Created by Marsel Tzatzo on 13/12/2017.
 """
 import pytest
 
-from elasticmodelspy.fields import BaseField
+from elasticmodelspy.index import BaseField
 
 def test_field_without_type():
     try:
@@ -43,7 +43,7 @@ def test_field_type():
     }
 
 def test_text_field():
-    from elasticmodelspy.fields import TextField
+    from elasticmodelspy.index import TextField
     from elasticmodelspy.analysis.analyzers import StandardAnalyzer
 
     # text field with standard analyzer class

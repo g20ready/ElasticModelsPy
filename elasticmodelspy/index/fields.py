@@ -5,7 +5,11 @@
 """
 Created by Marsel Tzatzo on 03/11/2017.
 """
+from abc import ABCMeta, abstractmethod
+
 from six import with_metaclass, string_types
+
+from abc import abstractproperty
 
 from weakref import WeakKeyDictionary
 
@@ -14,16 +18,27 @@ from elasticmodelspy.analysis import Analyzer
 
 from .mixins import FieldTypeMixin, FieldAttributesMixin
 
-
 class FieldMeta(type):
     def __new__(meta, name, bases, class_dict):
+        super_new = super(FieldMeta, meta).__new__
         # Don't validate Base Field
         if name != 'BaseField':
             if not class_dict.get('field_type'):
                 raise ValueError("Subclasses of BaseField must provide a value for 'field_type'.")
+
+            # If class dict does not declare fiedl attributes
             if not class_dict.get('field_attributes'):
-                raise ValueError("Subclasses of BaseField must provide a value for 'field_attributes'.")
-        cls = type.__new__(meta, name, bases, class_dict)
+                found = False
+                # Look for field attributes in all base classes
+                for base in bases:
+                    if getattr(base, 'field_attributes'):
+                        found = True
+
+                # If field attributes is not found then raise exception
+                if not found:
+                    raise ValueError("Subclasses of BaseField must provide a value for 'field_attributes'.")
+
+        cls = super_new(meta, name, bases, class_dict)
         return cls
 
 
@@ -92,6 +107,7 @@ class TextField(BaseField):
         'similarity',
         'term_vector'
     ]
+
     def __init__(self, name=None, **kwargs):
         super(TextField, self).__init__(name, **kwargs)
 
@@ -102,6 +118,9 @@ class TextField(BaseField):
             return value
         raise ValueError("Property 'analyzer' must be an instance of elasticmodelspy.analysis.Analyzer "
                          "or an instance of string type.")
+
+    def validate_index(self, value):
+        return bool(value)
 
 
 class KeywordField(BaseField):
@@ -123,5 +142,51 @@ class KeywordField(BaseField):
     def __init__(self, name=None, **kwargs):
         super(KeywordField, self).__init__(name)
 
-    def _serialize_field_data(self):
-        return self.__dict__
+
+class NumericField(BaseField):
+    """
+    Numeric field acts as an abstract field.
+    Declaring field_type numeric is temporary, until a better solution is found.
+    """
+    field_type = 'numeric'
+    field_attributes = [
+        'coerce',
+        'boost',
+        'doc_values',
+        'ignore_malformed',
+        'index',
+        'null_value',
+        'store'
+    ]
+
+
+class LongField(NumericField):
+    field_type = 'long'
+
+
+class IntegerField(NumericField):
+    field_type = 'integer'
+
+
+class ShortField(NumericField):
+    field_type = 'short'
+
+
+class ByteField(NumericField):
+    field_type = 'byte'
+
+
+class DoubleField(NumericField):
+    field_type = 'double'
+
+
+class FloatField(NumericField):
+    field_type = 'float'
+
+
+class HalfFloatField(NumericField):
+    field_type = 'half_float'
+
+
+class ScaledFloatField(NumericField):
+    field_type = 'scaled_float'

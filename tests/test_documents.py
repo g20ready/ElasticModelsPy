@@ -6,8 +6,10 @@
 Created by Marsel Tzatzo on 13/11/2017.
 """
 
-from elasticmodelspy.index import Document
-from elasticmodelspy.fields import KeywordField
+from elasticmodelspy.index import (
+    Document,
+    KeywordField
+)
 
 class SimpleDocument(Document):
     first_name = KeywordField()

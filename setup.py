@@ -33,7 +33,7 @@ setup(
     author="Marsel Tzatzo",
     author_email='tmarselg@gmail.com',
     url='https://github.com/g20ready/elasticmodelspy',
-    packages=find_packages(include=['elasticmodelspy']),
+    packages=find_packages('.', exclude=['tests']),
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",

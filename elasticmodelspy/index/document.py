@@ -7,7 +7,7 @@ Created by Marsel Tzatzo on 04/11/2017.
 """
 from six import with_metaclass, iteritems
 
-from elasticmodelspy.fields import BaseField
+from .fields import BaseField
 
 class DocumentMeta(type):
     def __new__(meta, name, bases, class_dict):
